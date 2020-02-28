@@ -12,6 +12,7 @@ const COIN = 1;
 const SKULL = 2;
 var score = 0;
 var info;
+var hero;
 
 window.onload = function() {
   let gameConfig = {
@@ -57,6 +58,10 @@ class playGame extends Phaser.Scene{
     this.load.image("Background","Art/MineBackground.png", {
       frameWidth: 1920,
       frameHeight: 1017
+    });
+    this.load.image("Block","Art/Block2.png", {
+      frameWidth: 1747,
+      frameHeight: 1920
     });
   }
   
@@ -106,6 +111,7 @@ class playGame extends Phaser.Scene{
 
     this.gameItems = this.add.group();
     let spawnRectangle = new Phaser.Geom.Rectangle(80, 250, game.config.width - 160, game.config.height - 350);
+  
 
     
     for (let i = 0; i < gameOptions.maxItemsPerLevel; i++) {
@@ -148,10 +154,19 @@ class playGame extends Phaser.Scene{
   releaseHero(e) {
     if (this.canSummonHero) {
       this.canSummonHero = false;
-      let item = this.matter.add.image(e.x, -200, "items");
-      item.setCircle();
-      item.setBounce(1);
-      item.body.label = HERO;
+      var particles = this.add.particles('Block');
+      var emitter = particles.createEmitter({
+        speed: 100,
+        scale: { start: 1, end: 0 },
+        blendMode: 'ADD'
+    });
+
+    
+      hero = this.matter.add.image(e.x, -200, "items");
+      hero.setCircle();
+      hero.setBounce(1);
+      hero.body.label = HERO;
+      emitter.startFollow(hero);
     }
   }
 update () {
