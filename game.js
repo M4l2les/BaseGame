@@ -54,20 +54,23 @@ class playGame extends Phaser.Scene{
       frameWidth: 128,
       frameHeight: 128
     });
-    this.add.image(0,0, 'Art/MineBackground.png').setOrigin(0);
+    this.load.image("Background","Art/MineBackground.png", {
+      frameWidth: 1920,
+      frameHeight: 1017
+    });
   }
   
   create() {
     this.canSummonHero = true;
     this.matter.world.update30Hz();
     this.matter.world.setBounds(0, -400, game.config.width, game.config.height + 800);
+    
     this.createLevel();
-
+    
     this.input.on("pointerdown", this.releaseHero, this);
     info = this.add.text(10, 10, '', { font: '48px Arial', fill: '#b9f2ff' });
-
     this.matter.world.on("collisionstart", function(e, b1, b2) {
-      
+    
       switch (b1.label) {
           
         case COIN:
@@ -99,6 +102,8 @@ class playGame extends Phaser.Scene{
   }
   
   createLevel() {
+    var bg = this.add.image(960,509, 'Background');  
+
     this.gameItems = this.add.group();
     let spawnRectangle = new Phaser.Geom.Rectangle(80, 250, game.config.width - 160, game.config.height - 350);
 
