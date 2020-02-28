@@ -23,8 +23,8 @@ window.onload = function() {
       mode: Phaser.Scale.FIT,
       autoCenter: Phaser.Scale.CENTER_BOTH,
       parent: "thegame",
-      width: 1920,
-      height: 1017,
+      width: 1680,
+      height: 988,
     },
     
     scene: playGame,
@@ -55,9 +55,9 @@ class playGame extends Phaser.Scene{
       frameWidth: 128,
       frameHeight: 128
     });
-    this.load.image("Background","Art/MineBackground.png", {
-      frameWidth: 1920,
-      frameHeight: 1017
+    this.load.image("Background","Art/CaveBack.jpg", {
+      frameWidth: 1680,
+      frameHeight: 988
     });
     this.load.image("Block","Art/Block2.png", {
       frameWidth: 1747,
