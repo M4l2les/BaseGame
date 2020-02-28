@@ -10,18 +10,20 @@ let gameOptions = {
 const HERO = 0;
 const COIN = 1;
 const SKULL = 2;
+var score = 0;
+var info;
 
 window.onload = function() {
   let gameConfig = {
     
     type: Phaser.AUTO,
-    
+
     scale: {
       mode: Phaser.Scale.FIT,
       autoCenter: Phaser.Scale.CENTER_BOTH,
       parent: "thegame",
-      width: 750,
-      height: 1334
+      width: 1920,
+      height: 1017,
     },
     
     scene: playGame,
@@ -52,6 +54,7 @@ class playGame extends Phaser.Scene{
       frameWidth: 128,
       frameHeight: 128
     });
+    this.add.image(0,0, 'Art/MineBackground.png').setOrigin(0);
   }
   
   create() {
@@ -59,9 +62,10 @@ class playGame extends Phaser.Scene{
     this.matter.world.update30Hz();
     this.matter.world.setBounds(0, -400, game.config.width, game.config.height + 800);
     this.createLevel();
-    
+
     this.input.on("pointerdown", this.releaseHero, this);
-    
+    info = this.add.text(10, 10, '', { font: '48px Arial', fill: '#b9f2ff' });
+
     this.matter.world.on("collisionstart", function(e, b1, b2) {
       
       switch (b1.label) {
@@ -69,6 +73,7 @@ class playGame extends Phaser.Scene{
         case COIN:
           b1.gameObject.visible = false;
           this.matter.world.remove(b1);
+          score++
           break;
           
         case SKULL:
@@ -76,7 +81,7 @@ class playGame extends Phaser.Scene{
             b1.gameObject.visible = false;
             this.matter.world.remove(b1);
           } else {
-            this.cameras.main.flash(50, 255, 0, 0);
+            this.cameras.main.flash(0, 0, 255, 0);
           }
           break;
           
@@ -96,6 +101,7 @@ class playGame extends Phaser.Scene{
   createLevel() {
     this.gameItems = this.add.group();
     let spawnRectangle = new Phaser.Geom.Rectangle(80, 250, game.config.width - 160, game.config.height - 350);
+
     
     for (let i = 0; i < gameOptions.maxItemsPerLevel; i++) {
       let iterations = 0;
@@ -143,4 +149,7 @@ class playGame extends Phaser.Scene{
       item.body.label = HERO;
     }
   }
+update () {
+    info.setText('All Time Score: ' + score);
+}
 };
